@@ -1,0 +1,16 @@
+$path_to_folder: '/fonts';
+
+@font-face {
+  font-family: 'GothamPro';
+
+  src: url('#{$path_to_folder}/GothamPro/GothamPro.woff2');
+
+  src: local('GothamPro'),
+    url('#{$path_to_folder}/GothamPro/GothamPro.woff2') format('woff2'),
+    url('#{$path_to_folder}/GothamPro/GothamPro.woff') format('woff'),
+    url('#{$path_to_folder}/GothamPro/GothamPro.ttf') format('truetype');
+  unicode-range: U+000-5FF;
+  font-display: auto;
+  font-style: normal;
+  font-display: swap;
+}
