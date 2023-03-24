@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 .vscode
+.firebase
 .DS_Store
 dist
 dist-ssr
