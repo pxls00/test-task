@@ -1,0 +1,49 @@
+$grey: (
+  'darken-1': #353638,
+  'lighten-1': #9e9e9e,
+  'base': #696969,
+);
+
+$white: (
+  'base': #ffffff,
+);
+
+$colors: (
+  'grey': $grey,
+  'white': $white,
+);
+
+@mixin background-color($color_value) {
+  background-color: $color_value !important;
+  border-color: $color_value !important;
+}
+
+@mixin text-color($color_value) {
+  color: $color_value !important;
+  caret-color: $color_value !important;
+}
+
+@each $color_name, $color_color in $colors {
+  @each $color_type, $color_value in $color_color {
+    @if ($color_type == 'base') {
+      .#{$color_name} {
+        @include background-color($color_value);
+      }
+
+      .#{$color_name}--text {
+        @include text-color($color_value);
+      }
+    }
+
+    .#{$color_name}.#{$color_type} {
+      @include background-color($color_value);
+    }
+
+    .#{$color_name}--text.text--#{$color_type} {
+      @include text-color($color_value);
+    }
+  }
+}
+
+$main-bg: map-get($grey, 'darken-1');
+$main-color: map-get($grey, 'base');

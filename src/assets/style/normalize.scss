@@ -6,10 +6,16 @@
   outline: none;
   border: none;
   text-decoration: none;
+  font-family: 'GothamPro';
 }
 
-body, #app {
+body,
+#app {
   width: 100%;
   height: 100%;
   min-height: 100vh;
+}
+
+body {
+  background: $main-bg;
 }
