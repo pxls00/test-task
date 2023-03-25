@@ -215,7 +215,7 @@ module.exports = {
     'vue/no-unused-properties': [
       'error',
       {
-        groups: ['data', 'props', 'computed', 'methods', 'setup'], // if you are using typesciprt when recomend remove props
+        groups: ['data', 'computed', 'methods', 'setup'], // if you are using typesciprt when recomend remove props
         deepData: true,
       },
     ],
