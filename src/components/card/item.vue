@@ -1,11 +1,16 @@
 <template>
   <li>
-    <div :class="[$style['card__item'], $style[!stopWatchTime.isStoped ? 'going' : '']]">
+    <div
+      :class="[
+        $style['card__item'],
+        $style[!stopWatchTime.isStoped ? 'going' : ''],
+      ]"
+    >
       <div v-if="!props.plus" :class="[$style['card__item__time']]">
         <p>{{ getFormatedTime(stopWatchTime.time) }}</p>
       </div>
       <div v-if="!props.plus" :class="[$style['card__item__actions']]">
-        <button 
+        <button
           v-if="stopWatchTime.isStoped"
           type="button"
           :class="[$style['card__item__actions--btn']]"
@@ -21,20 +26,17 @@
         >
           <PauseIcon />
         </button>
-        <button 
-          type="button" 
-          :class="[$style['card__item__actions--btn']]" 
+        <button
+          type="button"
+          :class="[$style['card__item__actions--btn']]"
           @click="resetWatchTime"
         >
           <SquareIcon />
         </button>
       </div>
-      <div 
-        v-else 
-        :class="[$style['card__item__plus']]" 
-      >
+      <div v-else :class="[$style['card__item__plus']]">
         <button
-          type="button" 
+          type="button"
           :class="[$style['card__item__actions--btn']]"
           @click="plusWatchTime"
         >
@@ -68,21 +70,20 @@ const props = defineProps({
   item: Object,
   plus: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 const emits = defineEmits(['pauseTime', 'plusTime', 'resetTime'])
-
 
 const stopWatchTime = reactive({})
 let intervalId = null
 
 function setWatchTime (item) {
-  if(!props.plus) {
-    stopWatchTime.time = item.time,
-    stopWatchTime.id = item.id,
-    stopWatchTime.isStoped = item.isStoped
+  if (!props.plus) {
+    ;(stopWatchTime.time = item.time),
+    (stopWatchTime.id = item.id),
+    (stopWatchTime.isStoped = item.isStoped)
   }
 }
 
@@ -135,7 +136,7 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
     * {
-      transition: all .2s;
+      transition: all 0.2s;
     }
   }
 
@@ -167,7 +168,7 @@ onMounted(() => {
     }
   }
   &.going {
-    .card__item__time  {
+    .card__item__time {
       border-bottom-color: map-get($white, 'base') !important;
       p {
         color: map-get($white, 'base') !important;
@@ -179,8 +180,6 @@ onMounted(() => {
         fill: map-get($white, 'base') !important;
       }
     }
-
-  
   }
 
   &__plus {
@@ -193,7 +192,7 @@ onMounted(() => {
       cursor: pointer;
       background: none;
       svg {
-        fill: map-get($white, 'base')
+        fill: map-get($white, 'base');
       }
     }
   }

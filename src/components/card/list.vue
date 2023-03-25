@@ -11,9 +11,9 @@
       @pause-time="pauseTime"
       @reset-time="resetTime"
     />
-    <CardItem 
-      :key="props.list.length" 
-      :plus="true" 
+    <CardItem
+      :key="props.list.length"
+      :plus="true"
       :item="{}"
       @plus-time="plusWatchTime"
     />
@@ -39,7 +39,6 @@ const props = defineProps({
 
 const emits = defineEmits(['pauseTime', 'plusTime', 'resetTime'])
 
-
 function pauseTime (stopWatchTime) {
   emits('pauseTime', stopWatchTime)
 }
@@ -49,7 +48,6 @@ function resetTime (stopWatchTime) {
 }
 
 function plusWatchTime () {
-  console.log('create')
   emits('plusTime')
 }
 
