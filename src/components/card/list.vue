@@ -5,9 +5,17 @@
     :class="[$style['card__list']]"
   >
     <CardItem
-      v-for="item in list"
+      v-for="item in props.list"
       :key="item.id"
       :item="item"
+      @pause-time="pauseTime"
+      @reset-time="resetTime"
+    />
+    <CardItem
+      :key="props.list.length"
+      :plus="true"
+      :item="{}"
+      @plus-time="plusWatchTime"
     />
   </TransitionGroup>
 </template>
@@ -22,32 +30,31 @@ export default defineComponent({
 
 <script setup>
 import CardItem from '@/components/card/item.vue'
-import { useCssModule, onMounted } from 'vue'
+import { useCssModule } from 'vue'
 
 const $style = useCssModule()
 const props = defineProps({
-  list: {
-    type: Array,
-    required: true,
-  },
+  list: Array,
 })
 
-onMounted(() => {
-  console.log(props.list)
-})
+const emits = defineEmits(['pauseTime', 'plusTime', 'resetTime'])
+
+function pauseTime (stopWatchTime) {
+  emits('pauseTime', stopWatchTime)
+}
+
+function resetTime (stopWatchTime) {
+  emits('resetTime', stopWatchTime)
+}
+
+function plusWatchTime () {
+  emits('plusTime')
+}
+
+// Я мог бы тут использовать глобальний стейт меннегер (vuex или pinia) чтобы избежать от передания данных по этапно, но у вас в задаче указано только vue :))
 </script>
 
 <style lang="scss" module>
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.3s ease;
-}
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(-30px);
-}
-
 .card__list {
   list-style: none;
   row-gap: 50px;

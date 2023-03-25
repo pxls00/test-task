@@ -1,6 +1,11 @@
 <template>
   <div :class="[$style['wrapper']]">
-    <CardList :list="stopWatchList" />
+    <CardList
+      :list="stopWatchList"
+      @plus-time="createStopWatchTime"
+      @reset-time="resetWatchTime"
+      @pause-time="pauseWatchTime"
+    />
   </div>
 </template>
 
@@ -14,15 +19,42 @@ export default defineComponent({
 
 <script setup>
 import CardList from '@/components/card/list.vue'
-import { ref, useCssModule } from 'vue'
-import GenerateWatch from '@/helpers/generateWatchTime'
+import { reactive, ref, useCssModule } from 'vue'
 
 const $style = useCssModule()
-const timer1 = new GenerateWatch()
 const stopWatchList = ref([])
 
+function createStopWatchTime () {
+  const time = reactive({
+    id: new Date().getTime() + stopWatchList.value.length,
+    time: 0,
+    isStoped: true,
+  })
+
+  stopWatchList.value.push(time)
+}
+
+function resetWatchTime (stopWatchTime) {
+  const stopWatchItem = stopWatchList.value.find(
+    (item) => item.id === stopWatchTime.id
+  )
+
+  stopWatchItem.time = 0
+  stopWatchItem.isStoped = true
+}
+
+function pauseWatchTime (stopWatchTime) {
+  const stopWatchItem = stopWatchList.value.find(
+    (item) => item.id === stopWatchTime.id
+  )
+
+  stopWatchItem.time = stopWatchTime.time
+  stopWatchItem.isStoped = stopWatchTime.isStoped
+}
+
 onMounted(() => {
-  stopWatchList.value.push(timer1)
+  createStopWatchTime()
+  createStopWatchTime()
 })
 </script>
 

@@ -1,22 +1,45 @@
 <template>
   <li>
-    <div :class="[$style['card__item'], $style['going']]">
-      <div :class="[$style['card__item__time']]">
-        <p>12:05:32</p>
+    <div
+      :class="[
+        $style['card__item'],
+        $style[!stopWatchTime.isStoped ? 'going' : ''],
+      ]"
+    >
+      <div v-if="!props.plus" :class="[$style['card__item__time']]">
+        <p>{{ getFormatedTime(stopWatchTime.time) }}</p>
       </div>
-      <div :class="[$style['card__item__actions']]">
-        <button type="button" :class="[$style['card__item__actions--btn']]">
+      <div v-if="!props.plus" :class="[$style['card__item__actions']]">
+        <button
+          v-if="stopWatchTime.isStoped"
+          type="button"
+          :class="[$style['card__item__actions--btn']]"
+          @click="playWatchTime"
+        >
           <PlayIcon />
         </button>
-        <button type="button" :class="[$style['card__item__actions--btn']]">
+        <button
+          v-if="!stopWatchTime.isStoped"
+          type="button"
+          :class="[$style['card__item__actions--btn']]"
+          @click="pauseWatchTime"
+        >
           <PauseIcon />
         </button>
-        <button type="button" :class="[$style['card__item__actions--btn']]">
+        <button
+          type="button"
+          :class="[$style['card__item__actions--btn']]"
+          @click="resetWatchTime"
+        >
           <SquareIcon />
         </button>
       </div>
-      <div :class="[$style['card__item__plus']]">
-        <button type="button" :class="[$style['card__item__actions--btn']]">
+      <div v-else :class="[$style['card__item__plus']]">
+        <button
+          type="button"
+          :class="[$style['card__item__actions--btn']]"
+          @click="plusWatchTime"
+        >
           <PlusIcon />
         </button>
       </div>
@@ -25,7 +48,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 
 export default defineComponent({
   name: 'StopWatchCardItem',
@@ -37,9 +60,65 @@ import PlayIcon from '@/assets/icons/play.svg?component'
 import PauseIcon from '@/assets/icons/pause.svg?component'
 import PlusIcon from '@/assets/icons/plus.svg?component'
 import SquareIcon from '@/assets/icons/square.svg?component'
-import { useCssModule } from 'vue'
+import getFormatedTime from '@/helpers/getFormatedTime'
+
+import { useCssModule, reactive } from 'vue'
 
 const $style = useCssModule()
+
+const props = defineProps({
+  item: Object,
+  plus: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const emits = defineEmits(['pauseTime', 'plusTime', 'resetTime'])
+
+const stopWatchTime = reactive({})
+let intervalId = null
+
+function setWatchTime (item) {
+  if (!props.plus) {
+    ;(stopWatchTime.time = item.time),
+    (stopWatchTime.id = item.id),
+    (stopWatchTime.isStoped = item.isStoped)
+  }
+}
+
+function interval () {
+  return setInterval(() => {
+    stopWatchTime.time += 1
+  }, 1000)
+}
+
+function playWatchTime () {
+  intervalId = interval()
+  stopWatchTime.isStoped = false
+}
+
+function pauseWatchTime () {
+  clearInterval(intervalId)
+  stopWatchTime.isStoped = true
+  emits('pauseTime', stopWatchTime)
+  setWatchTime(props.item)
+}
+
+function resetWatchTime () {
+  clearInterval(intervalId)
+  emits('resetTime', stopWatchTime)
+  setWatchTime(props.item)
+}
+
+function plusWatchTime () {
+  emits('plusTime')
+  setWatchTime(props.item)
+}
+
+onMounted(() => {
+  setWatchTime(props.item)
+})
 </script>
 
 <style lang="scss" module>
@@ -56,6 +135,9 @@ const $style = useCssModule()
     display: flex;
     justify-content: center;
     align-items: center;
+    * {
+      transition: all 0.2s;
+    }
   }
 
   &__time {
@@ -85,18 +167,32 @@ const $style = useCssModule()
       }
     }
   }
-
   &.going {
-    .card__item__time,
-    .card__item__actions {
+    .card__item__time {
+      border-bottom-color: map-get($white, 'base') !important;
       p {
-        color: map-get($white, 'base');
+        color: map-get($white, 'base') !important;
       }
+    }
+    .card__item__actions {
+      border-top-color: map-get($white, 'base') !important;
+      svg {
+        fill: map-get($white, 'base') !important;
+      }
+    }
+  }
 
-      button {
-        svg {
-          fill: map-get($white, 'base');
-        }
+  &__plus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+    button {
+      cursor: pointer;
+      background: none;
+      svg {
+        fill: map-get($white, 'base');
       }
     }
   }

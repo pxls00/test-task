@@ -16,9 +16,9 @@ function getFormatedTime (time) {
     seconds = '0' + seconds
   }
 
-  if (time > 3600) {
+  if (time >= 3600) {
     return hours + ':' + minutes + ':' + seconds
-  } else if (time > 60) {
+  } else if (time >= 60) {
     return minutes + ':' + seconds
   } else {
     return seconds
