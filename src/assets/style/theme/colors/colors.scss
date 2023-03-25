@@ -1,19 +1,17 @@
 $grey: (
   'darken-1': #353638,
-  'lighten-1': #9E9E9E,
+  'lighten-1': #9e9e9e,
   'base': #696969,
 );
 
-$shades: (
-  'black': #000,
-  'white': #FFFFFF,
+$white: (
+  'base': #ffffff,
 );
 
 $colors: (
   'grey': $grey,
-  'shades': $shades,
+  'white': $white,
 );
-
 
 @mixin background-color($color_value) {
   background-color: $color_value !important;
@@ -25,20 +23,9 @@ $colors: (
   caret-color: $color_value !important;
 }
 
-@each $color_name,
-$color_value in $shades {
-  .#{$color_name} {
-    @include background-color($color_value);
-  }
-
-  .#{$color_name}--text {
-    @include text-color($color_value);
-  }
-}
-
 @each $color_name, $color_color in $colors {
   @each $color_type, $color_value in $color_color {
-    @if ($color_type =='base') {
+    @if ($color_type == 'base') {
       .#{$color_name} {
         @include background-color($color_value);
       }
@@ -48,14 +35,12 @@ $color_value in $shades {
       }
     }
 
-    @else if ($color_type !='shades') {
-      .#{$color_name}.#{$color_type} {
-        @include background-color($color_value);
-      }
+    .#{$color_name}.#{$color_type} {
+      @include background-color($color_value);
+    }
 
-      .#{$color_name}--text.text--#{$color_type} {
-        @include text-color($color_value);
-      }
+    .#{$color_name}--text.text--#{$color_type} {
+      @include text-color($color_value);
     }
   }
 }

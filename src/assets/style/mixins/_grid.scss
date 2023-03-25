@@ -27,27 +27,27 @@ $offset_md: 18px;
   @include wrapper-offset($offset);
 
   @include xl-block() {
-    max-width: calc( $break_xl - 15% );
+    max-width: calc($break_xl - 15%);
   }
 
   @include lg-block() {
-    max-width: calc( $break_lg - 10% );
+    max-width: calc($break_lg - 10%);
   }
 
   @include md-block() {
-    max-width: calc( $break_md - 15% );
+    max-width: calc($break_md - 15%);
   }
 
   @include sm-block() {
-    max-width: calc( $break_sm - 15% );
+    max-width: calc($break_sm - 15%);
   }
 
   @include xs-block() {
-    max-width: calc( $break_xs - 20% );
+    max-width: calc($break_xs - 20%);
   }
 
   @include xs-block() {
-    max-width: calc( $break_xs - 20% );
+    max-width: calc($break_xs - 20%);
   }
 }
 
