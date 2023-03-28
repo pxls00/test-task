@@ -1,5 +1,7 @@
 <template>
   <div :class="[$style['wrapper']]">
+    <app-messages />
+    <button type="button" @click="testWait">test</button>
     <CardList
       :list="stopWatchList"
       @plus-time="createStopWatchTime"
@@ -19,7 +21,13 @@ export default defineComponent({
 
 <script setup>
 import CardList from '@/components/card/list.vue'
-import { reactive, ref, useCssModule } from 'vue'
+import { reactive, ref, useCssModule, inject } from 'vue'
+
+const message = inject('message')
+
+function testWait () {
+  message.waitAction()
+}
 
 const $style = useCssModule()
 const stopWatchList = ref([])
